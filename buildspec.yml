@@ -1,27 +1,25 @@
+---
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       php: 8.2
-
   build:
     commands:
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
       - docker build -t php-docker-app .
       - echo "Logging in to Amazon ECR..."
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 050451404045.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region ap-south-1 | docker login --username
+AWS --password-stdin 050451404045.dkr.ecr.ap-south-1.amazonaws.com
       - echo "Tagging the Docker image for ECR..."
-      - docker tag php-docker-app:latest 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest
-
+      - docker tag php-docker-app:latest
+        050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest
   post_build:
     commands:
       - echo "Pushing the Docker image to ECR..."
       - docker push 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest
       - echo "Creating JSON artifact..."
-      - printf '{"imageUri": "%s"}' 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest > php-docker-app-artifacts.json  # Create a JSON artifact
-
 artifacts:
   files:
     - php-docker-app-artifacts.json
