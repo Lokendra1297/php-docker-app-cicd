@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app-cicd-php
+    destination: /home/ec2-user/app
 hooks:
   AfterInstall:
     - location: deploy.sh
