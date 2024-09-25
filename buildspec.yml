@@ -1,10 +1,10 @@
-  GNU nano 7.2                                                                             buildspec.yml *                                                                                    
 version: 0.2
 
 phases:
   install:
     runtime-versions:
-      php: 8.2  # Specify PHP version 8.2      
+      php: 8.2  # Specify PHP version 8.2
+      
   build:
     commands:
       - echo "Build started on `date`"
@@ -25,7 +25,3 @@ phases:
 artifacts:
   files:
     - php-docker-app-artifacts.json  # Specify the JSON artifact
-
-
-
-
