@@ -1,0 +1,31 @@
+  GNU nano 7.2                                                                             buildspec.yml *                                                                                    
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.2  # Specify PHP version 8.2      
+  build:
+    commands:
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
+      - docker build -t php-docker-app .  # Build the Docker image
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 050451404045.dkr.ecr.ap-south-1.amazonaws.com  # Authenticate with ECR
+      - echo "Tagging the Docker image for ECR..."
+      - docker tag php-docker-app:latest 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest  # Tag the image with ECR repository
+
+  post_build:
+    commands:
+      - echo "Pushing the Docker image to ECR..."
+      - docker push 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest  # Push the image to ECR
+      - echo "Creating JSON artifact..."
+      - printf '{"imageUri": "%s"}' 050451404045.dkr.ecr.ap-south-1.amazonaws.com/php-docker-app:latest > php-docker-app-artifacts.json  # Create a JSON artifact
+
+artifacts:
+  files:
+    - php-docker-app-artifacts.json  # Specify the JSON artifact
+
+
+
+
